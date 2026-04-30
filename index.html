@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>પરિણામ પોર્ટલ - વાંકાનેર</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #f4f7f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+
+        header h1 { font-size:1.2rem; margin: 0; }
+        header h2 { font-size: 1rem; margin: 5px 0 0; opacity: 0.9; color: yellow; }
+
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .class-btn {
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 2px solid var(--accent-color);
+            background: white;
+            color: var(--accent-color);
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .class-btn:active, .class-btn.active {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .search-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            display: none;
+        }
+
+        input[type="number"] {
+            padding: 12px;
+            font-size: 16px;
+            width: 80%;
+            max-width: 200px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .view-btn {
+            padding: 12px 30px;
+            font-size: 16px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 250px;
+        }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.1rem; }
+            .class-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <header>
+        <h1>પ્રાથમિક શાળા વાંકાનેર<br>તા.બારડોલી, જી.સુરત</h1>
+        <h2>પરિણામ : 2025-26</h2>
+        <h2>તારીખ 02-05-2026 ના રોજ સવારે 7 વાગ્યે પરિણામ ઓનલાઇન જોવા મળશે </h2>
+    </header>
+
+    <div class="content">
+        <h3 id="step-title">પ્રથમ ધોરણ પસંદ કરો:</h3>
+        
+        <div class="class-grid">
+            <button class="class-btn" onclick="selectClass('6A')">ધોરણ 6-A</button>
+            <button class="class-btn" onclick="selectClass('6B')">ધોરણ 6-B</button>
+            <button class="class-btn" onclick="selectClass('7A')">ધોરણ 7-A</button>
+            <button class="class-btn" onclick="selectClass('7B')">ધોરણ 7-B</button>
+            <button class="class-btn" onclick="selectClass('8A')">ધોરણ 8-A</button>
+            <button class="class-btn" onclick="selectClass('8B')">ધોરણ 8-B</button>
+        </div>
+
+        <div class="search-section" id="search-section">
+            <h3 id="selected-class-label"></h3>
+            <input type="number" id="roll-no" placeholder="હાજરી નંબર નાખો..." min="1">
+            <button class="view-btn" onclick="viewResult()">પરિણામ જુઓ (PDF)</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentClass = '';
+
+    function selectClass(className) {
+        currentClass = className;
+        document.querySelectorAll('.class-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if(btn.innerText.includes(className)) btn.classList.add('active');
+        });
+        document.getElementById('search-section').style.display = 'block';
+        document.getElementById('selected-class-label').innerText = "ધોરણ " + className + " માટે હાજરી નંબર:";
+        document.getElementById('roll-no').value = '';
+        document.getElementById('roll-no').focus();
+    }
+
+    function viewResult() {
+        const rollNo = document.getElementById('roll-no').value;
+        
+        if (currentClass === "") {
+            alert("કૃપા કરીને પહેલા ધોરણ પસંદ કરો.");
+            return;
+        }
+        if (rollNo === "" || rollNo <= 0) {
+            alert("કૃપા કરીને સાચો હાજરી નંબર દાખલ કરો.");
+            return;
+        }
+
+        // GitHub Pages માટેનો સાચો પાથ
+        // './' નો ઉપયોગ કરવાથી તે તમારી વર્તમાન લિંકની સાપેક્ષમાં ફાઈલ શોધશે.
+        const pdfPath = `/results/${currentClass}/${rollNo}.pdf`;
+        
+        window.open(pdfPath, '_blank');
+    }
+</script>
+
+</body>
+</html>
